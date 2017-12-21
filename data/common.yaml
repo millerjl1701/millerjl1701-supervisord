@@ -1,0 +1,7 @@
+---
+
+supervisord::package_ensure: 'present'
+supervisord::package_name: 'supervisord'
+supervisord::service_enable: true
+supervisord::service_ensure: 'running'
+supervisord::service_name: 'supervisord'
