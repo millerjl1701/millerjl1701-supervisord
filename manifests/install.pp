@@ -5,6 +5,13 @@
 class supervisord::install {
   assert_private('supervisord::install is a private class')
 
+  file { [ $::supervisord::confdir, "${::supervisord::confdir}/conf.d", ]:
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+  }
+
   python::pip { $::supervisord::package_name:
     pkgname    => $::supervisord::package_name,
     ensure     => $::supervisord::package_ensure,

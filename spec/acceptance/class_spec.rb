@@ -13,13 +13,30 @@ describe 'supervisord class' do
       apply_manifest(pp, :catch_changes  => true)
     end
 
-    describe package('supervisord') do
-      it { should be_installed }
+    describe file('/etc/supervisor') do
+      it { should be_directory }
+      it { should be_mode 755 }
+      it { should be_owned_by 'root' }
+      it { should be_grouped_into 'root' }
     end
 
-    describe service('supervisord') do
-      it { should be_enabled }
-      it { should be_running }
+    describe file('/etc/supervisor/conf.d') do
+      it { should be_directory }
+      it { should be_mode 755 }
+      it { should be_owned_by 'root' }
+      it { should be_grouped_into 'root' }
     end
+
+    describe file('/bin/supervisord') do
+      it { should be_file }
+      it { should be_mode 755 }
+      it { should be_owned_by 'root' }
+      it { should be_grouped_into 'root' }
+    end
+
+    #describe service('supervisord') do
+    #  it { should be_enabled }
+    #  it { should be_running }
+    #end
   end
 end

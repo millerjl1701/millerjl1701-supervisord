@@ -10,21 +10,28 @@
 # @param service_name Specifies the name of the service to manage. Default value: 'supervisord'.
 #
 class supervisord (
-  String                     $package_ensure   = 'present',
-  String                     $package_name     = 'supervisor',
-  Boolean                    $service_enable   = true,
-  Enum['running', 'stopped'] $service_ensure   = 'running',
-  String                     $service_name     = 'supervisord',
-  String                     $virtualenv       = 'system',
-  String                     $virtualenv_owner = 'root',
+  Stdlib::Absolutepath       $confdir                  = '/etc/supervisor',
+  Boolean                    $manage_python            = true,
+  Enum['present', 'absent']  $manage_python_dev        = 'present',
+  Boolean                    $manage_python_use_epel   = true,
+  Enum['present', 'absent']  $manage_python_virtualenv = 'present',
+  String                     $package_ensure           = 'present',
+  String                     $package_name             = 'supervisor',
+  Boolean                    $service_enable           = true,
+  Enum['running', 'stopped'] $service_ensure           = 'running',
+  String                     $service_name             = 'supervisord',
+  String                     $virtualenv               = 'system',
+  String                     $virtualenv_owner         = 'root',
   ) {
   case $::operatingsystem {
     'RedHat', 'CentOS': {
+      contain supervisord::python
       contain supervisord::install
       contain supervisord::config
       contain supervisord::service
 
-      Class['supervisord::install']
+      Class['supervisord::python']
+      -> Class['supervisord::install']
       -> Class['supervisord::config']
       ~> Class['supervisord::service']
     }

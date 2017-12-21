@@ -11,20 +11,51 @@ describe 'supervisord' do
         context "supervisord class without any parameters changed from defaults" do
           it { is_expected.to compile.with_all_deps }
 
+          it { is_expected.to contain_class('supervisord::python') }
           it { is_expected.to contain_class('supervisord::install') }
           it { is_expected.to contain_class('supervisord::config') }
           it { is_expected.to contain_class('supervisord::service') }
+          it { is_expected.to contain_class('supervisord::python').that_comes_before('Class[supervisord::install]') }
           it { is_expected.to contain_class('supervisord::install').that_comes_before('Class[supervisord::config]') }
           it { is_expected.to contain_class('supervisord::service').that_subscribes_to('Class[supervisord::config]') }
 
-          it { is_expected.to contain_package('supervisord').with_ensure('present') }
+          it { is_expected.to contain_class('epel') }
+          it { is_expected.to contain_yumrepo('epel') }
 
-          it { is_expected.to contain_service('supervisord').with(
-            'ensure'     => 'running',
-            'enable'     => 'true',
-            'hasstatus'  => 'true',
-            'hasrestart' => 'true',
+          it { is_expected.to contain_class('python').with(
+            'dev'             => 'present',
+            'manage_gunicorn' => false,
+            'use_epel'        => true,
+            'virtualenv'      => 'present',
           ) }
+
+          it { is_expected.to contain_file('/etc/supervisor').with(
+            'ensure' => 'directory',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0755',
+          ) }
+
+          it { is_expected.to contain_file('/etc/supervisor/conf.d').with(
+            'ensure' => 'directory',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0755',
+          ) }
+
+          it { is_expected.to contain_python__pip('supervisor').with(
+            'pkgname'    => 'supervisor',
+            'ensure'     => 'present',
+            'virtualenv' => 'system',
+            'owner'      => 'root',
+          ) }
+
+          #it { is_expected.to contain_service('supervisord').with(
+          #  'ensure'     => 'running',
+          #  'enable'     => 'true',
+          #  'hasstatus'  => 'true',
+          #  'hasrestart' => 'true',
+          #) }
         end
       end
     end
