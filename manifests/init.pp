@@ -10,11 +10,13 @@
 # @param service_name Specifies the name of the service to manage. Default value: 'supervisord'.
 #
 class supervisord (
-  String                     $package_ensure = 'present',
-  String                     $package_name   = 'supervisord',
-  Boolean                    $service_enable = true,
-  Enum['running', 'stopped'] $service_ensure = 'running',
-  String                     $service_name   = 'supervisord',
+  String                     $package_ensure   = 'present',
+  String                     $package_name     = 'supervisor',
+  Boolean                    $service_enable   = true,
+  Enum['running', 'stopped'] $service_ensure   = 'running',
+  String                     $service_name     = 'supervisord',
+  String                     $virtualenv       = 'system',
+  String                     $virtualenv_owner = 'root',
   ) {
   case $::operatingsystem {
     'RedHat', 'CentOS': {
