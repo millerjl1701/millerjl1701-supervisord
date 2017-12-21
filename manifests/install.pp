@@ -5,7 +5,10 @@
 class supervisord::install {
   assert_private('supervisord::install is a private class')
 
-  package { $::supervisord::package_name:
-    ensure => $::supervisord::package_ensure,
+  python::pip { $::supervisord::package_name:
+    pkgname    => $::supervisord::package_name,
+    ensure     => $::supervisord::package_ensure,
+    virtualenv => $::supervisord::virtualenv,
+    owner      => $::supervisord::virtualenv_owner,
   }
 }
