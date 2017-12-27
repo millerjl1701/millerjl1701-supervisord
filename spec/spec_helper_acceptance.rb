@@ -19,6 +19,7 @@ RSpec.configure do |c|
     puppet_module_install(:source => proj_root, :module_name => 'supervisord')
     hosts.each do |host|
       on host, puppet('module', 'install', 'camptocamp-systemd'), { :acceptable_exit_codes => [0,1] }
+      on host, puppet('module', 'install', 'puppetlabs-inifile'), { :acceptable_exit_codes => [0,1] }
       on host, puppet('module', 'install', 'puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
       on host, puppet('module', 'install', 'stahnma-epel'), { :acceptable_exit_codes => [0,1] }
       on host, puppet('module', 'install', 'stankevich-python'), { :acceptable_exit_codes => [0,1] }
