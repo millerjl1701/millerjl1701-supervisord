@@ -80,9 +80,9 @@ describe 'supervisord class' do
       it { should contain 'Description=Process Monitoring and Control Daemon' }
     end
 
-    #describe service('supervisord') do
-    #  it { should be_enabled }
-    #  it { should be_running }
-    #end
+    describe service('supervisord') do
+      it { should be_enabled }
+      it { should be_running }
+    end
   end
 end

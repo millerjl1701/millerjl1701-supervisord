@@ -176,12 +176,12 @@ describe 'supervisord' do
           ) }
           it { is_expected.to contain_file('/etc/systemd/system/supervisord.service').that_notifies('Class[systemd::systemctl::daemon_reload]') }
 
-          #it { is_expected.to contain_service('supervisord').with(
-          #  'ensure'     => 'running',
-          #  'enable'     => 'true',
-          #  'hasstatus'  => 'true',
-          #  'hasrestart' => 'true',
-          #) }
+          it { is_expected.to contain_service('supervisord').with(
+            'ensure'     => 'running',
+            'enable'     => 'true',
+            'hasstatus'  => 'true',
+            'hasrestart' => 'true',
+          ) }
         end
       end
     end
