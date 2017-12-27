@@ -5,7 +5,12 @@
 class supervisord::install {
   assert_private('supervisord::install is a private class')
 
-  file { [ $::supervisord::confdir, "${::supervisord::confdir}/conf.d", ]:
+  file { [
+    $::supervisord::supervisord_confdir,
+    "${::supervisord::supervisord_confdir}/conf.d",
+    $::supervisord::supervisord_logdir,
+    $::supervisord::supervisord_rundir,
+  ]:
     ensure => directory,
     owner  => 'root',
     group  => 'root',

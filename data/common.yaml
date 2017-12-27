@@ -1,6 +1,5 @@
 ---
 
-supervisord::confdir: '/etc/supervisor'
 supervisord::manage_python: true
 supervisord::manage_python_dev: 'present'
 supervisord::manage_python_use_epel: true
@@ -10,5 +9,9 @@ supervisord::package_name: 'supervisor'
 supervisord::service_enable: true
 supervisord::service_ensure: 'running'
 supervisord::service_name: 'supervisord'
+supervisord::supervisord_confdir: '/etc/supervisor'
+supervisord::supervisord_conffile: 'supervisord.conf'
+supervisord::supervisord_logdir: '/var/log/supervisor'
+supervisord::supervisord_rundir: '/var/run/supervisor'
 supervisord::virtualenv: 'system'
 supervisord::virtualenv_owner: 'root'

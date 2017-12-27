@@ -10,7 +10,6 @@
 # @param service_name Specifies the name of the service to manage. Default value: 'supervisord'.
 #
 class supervisord (
-  Stdlib::Absolutepath       $confdir                  = '/etc/supervisor',
   Boolean                    $manage_python            = true,
   Enum['present', 'absent']  $manage_python_dev        = 'present',
   Boolean                    $manage_python_use_epel   = true,
@@ -20,6 +19,12 @@ class supervisord (
   Boolean                    $service_enable           = true,
   Enum['running', 'stopped'] $service_ensure           = 'running',
   String                     $service_name             = 'supervisord',
+  Stdlib::Absolutepath       $supervisord_confdir      = '/etc/supervisor',
+  String                     $supervisord_conffile     = 'supervisord.conf',
+  Optional[Hash]             $supervisord_ini_absent   = {},
+  Optional[Hash]             $supervisord_ini_present  = {},
+  Stdlib::Absolutepath       $supervisord_logdir       = '/var/log/supervisor',
+  Stdlib::Absolutepath       $supervisord_rundir       = '/var/run/supervisor',
   String                     $virtualenv               = 'system',
   String                     $virtualenv_owner         = 'root',
   ) {
