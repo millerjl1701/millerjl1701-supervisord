@@ -1,6 +1,6 @@
 {
   "name": "millerjl1701-supervisord",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "author": "millerjl1701",
   "summary": "Puppet module for managing supervisord for Galaxy components.",
   "license": "Apache-2.0",
