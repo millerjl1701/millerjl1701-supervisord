@@ -1,10 +1,17 @@
+# puppet managed file. local changes will be overwritten.
 [Unit]
-Description=Process Monitoring and Control Daemon
-After=rc-local.service nss-user-lookup.target
+Description=Supervisor process control system for UNIX
+Documentation=http://supervisord.org
+After=network.target<% if !@_after.empty? %> <%= @_after.join(" ") %><% end %>
 
 [Service]
-Type=forking
-ExecStart=/usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+Type=<%= @_type %>
+ExecStart=<%= @_binpath %> -c <%= @_confdir %>/<%= @_conffile %>
+ExecStop=<%= @_ctlpath %> $OPTIONS shutdown
+ExecReload=<%= @_ctlpath %> -c <%= @_confdir %>/<%= @_conffile %> $OPTIONS reload
+KillMode=<%= @_killmode %>
+Restart=<%= @_restart %>
+RestartSec=<%= @_restartsec %>
 
 [Install]
 WantedBy=multi-user.target

@@ -77,7 +77,14 @@ describe 'supervisord class' do
       it { should be_mode 644 }
       it { should be_owned_by 'root' }
       it { should be_grouped_into 'root' }
-      it { should contain 'Description=Process Monitoring and Control Daemon' }
+      it { should contain 'After=network.target' }
+      it { should contain 'Type=forking' }
+      it { should contain 'ExecStart=/usr/bin/supervisord -c /etc/supervisor/supervisord.conf' }
+      it { should contain 'ExecStop=/usr/bin/supervisorctl $OPTIONS shutdown' }
+      it { should contain 'ExecReload=/usr/bin/supervisorctl -c /etc/supervisor/supervisord.conf $OPTIONS reload' }
+      it { should contain 'KillMode=process' }
+      it { should contain 'Restart=on-failure' }
+      it { should contain 'RestartSec=50s' }
     end
 
     describe service('supervisord') do

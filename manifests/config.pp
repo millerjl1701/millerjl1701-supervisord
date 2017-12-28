@@ -5,8 +5,6 @@
 class supervisord::config {
   assert_private('supervisord::config is a private class')
 
-  include ::systemd::systemctl::daemon_reload
-
   $default_inisettings = {
     'unix_http_server'        =>
       { 'file' => "${::supervisord::supervisord_rundir}/supervisor.sock" },
@@ -61,11 +59,38 @@ class supervisord::config {
     }
   }
 
-  file { '/etc/systemd/system/supervisord.service':
-    ensure  => file,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => template('supervisord/supervisord.service.erb'),
-  } ~> Class['systemd::systemctl::daemon_reload']
+  if $::supervisord::supervisord_ini_absent {
+    $_ini_absent = $::supervisord::supervisord_ini_absent
+    $_ini_absent.each |String $_absent_section, Hash $_absent_settings| {
+      $_absent_settings.each |String $_absent_setting, String $_absent_value| {
+        ini_setting { "${_absent_section} ${_absent_setting}":
+          ensure  => absent,
+          path    => "${::supervisord::supervisord_confdir}/${::supervisord::supervisord_conffile}",
+          section => $_absent_section,
+          setting => $_absent_setting,
+          value   => $_absent_value,
+        }
+      }
+    }
+  }
+
+  if $::supervisord::manage_systemd_unit {
+    include ::systemd::systemctl::daemon_reload
+    $_after      = $::supervisord::supervisord_systemd_after
+    $_binpath    = $::supervisord::supervisord_binpath
+    $_confdir    = $::supervisord::supervisord_confdir
+    $_conffile   = $::supervisord::supervisord_conffile
+    $_ctlpath    = $::supervisord::supervisord_ctlpath
+    $_killmode   = $::supervisord::supervisord_systemd_killmode
+    $_restart    = $::supervisord::supervisord_systemd_restart
+    $_restartsec = $::supervisord::supervisord_systemd_restartsec
+    $_type       = $::supervisord::supervisord_systemd_type
+    file { '/etc/systemd/system/supervisord.service':
+      ensure  => file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => template($::supervisord::supervisord_systemd_template),
+    } ~> Class['systemd::systemctl::daemon_reload']
+  }
 }
