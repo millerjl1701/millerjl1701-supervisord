@@ -3,11 +3,33 @@
 #
 # Main class that includes all other classes for the supervisord module.
 #
-# @param package_ensure Whether to install the supervisord package, and/or what version. Values: 'present', 'latest', or a specific version number. Default value: present.
-# @param package_name Specifies the name of the package to install. Default value: 'supervisord'.
-# @param service_enable Whether to enable the supervisord service at boot. Default value: true.
-# @param service_ensure Whether the supervisord service should be running. Default value: 'running'.
-# @param service_name Specifies the name of the service to manage. Default value: 'supervisord'.
+# @param manage_python Whether or not to have the module manage python using the stankevich-python module.
+# @param manage_python_dev Desired state of the python-dev package passed to python class from stankevich-python module.
+# @param manage_python_use_epel Whether or not to use epel passed to python class from stankevich-python module.
+# @param manage_python_virtualenv Desired state of the virtualenv package passed to python class from stankevich-python module.
+# @param manage_service Whether or not to manage the supervisord service with this module.
+# @param manage_systemd_unit Whether or not to manage the systemd unit for supervisord.service with this module.
+# @param package_ensure Whether to install the supervisord package, and/or what version. Suggested values: 'present', 'latest', or a specific version number.
+# @param package_name Specifies the name of the package to install.
+# @param service_enable Whether to enable the supervisord service at boot.
+# @param service_ensure Whether the supervisord service should be running.
+# @param service_name Specifies the name of the service to manage.
+# @param supervisord_binpath Path to the supervisord binary. Defaults to location if installed to system.
+# @param supervisord_confdir Configuration directory to use for the supervisord service.
+# @param supervisord_conffile Configuration file name to use for the supercisord service.
+# @param supervisord_ctlpath Path to the supervisorctl binary. Defaults to location if installed to system.
+# @param supervisord_ini_absent INI Settings in supervisord.conf that should be removed if present.
+# @param supervisord_ini_present INI Settings in supervisord.conf that should replace default settings or be added as new settings.
+# @param supervisord_logdir Log directory for the supervisord service.
+# @param supervisord_rundir Run-time files directory for the supervisord service.
+# @param supervisord_systemd_after Systemd units to append after network.target so that they start before supervisord.
+# @param supervisord_systemd_killmode Specifies how systemd should kill the processes of the supervisord unit.
+# @param supervisord_systemd_restart Configures whether the service shall be restarted when the service process exits, is killed, or a timeout is reached.
+# @param supervisord_systemd_restartsec Configures the time to sleep before restarting a service.
+# @param supervisord_systemd_template Template for puppet to use to create the supervisord.service file.
+# @param supervisord_systemd_type Configures the process start-up type for the supervisord.service unit.
+# @param virtualenv Which virtualenv to install supervisor.
+# @param virtualenv_owner User that should own and run the supervisor daemon.
 #
 class supervisord (
   Boolean                    $manage_python                  = true,
