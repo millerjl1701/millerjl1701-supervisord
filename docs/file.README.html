@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.9.9
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="file_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="puppet_class_list_link"
+        href="puppet_class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><div id='filecontents'>
+<h1 id="label-supervisord">supervisord</h1>
+
+<p>master branch: <a
+href="http://travis-ci.org/millerjl1701/millerjl1701-supervisord"><img
+src="https://secure.travis-ci.org/millerjl1701/millerjl1701-supervisord.png?branch=master"></a></p>
+
+<h4 id="label-Table+of+Contents">Table of Contents</h4>
+<ol><li>
+<p><a href="#module-description">Module Description - What the module does and
+why it is useful</a></p>
+</li><li>
+<p><a href="#setup">Setup - The basics of getting started with supervisord</a></p>
+<ul><li>
+<p><a href="#what-supervisord-affects">What supervisord affects</a></p>
+</li><li>
+<p><a href="#setup-requirements">Setup requirements</a></p>
+</li><li>
+<p><a href="#beginning-with-supervisord">Beginning with supervisord</a></p>
+</li></ul>
+</li><li>
+<p><a href="#usage">Usage - Configuration options and additional
+functionality</a></p>
+</li><li>
+<p><a href="#reference">Reference - An under-the-hood peek at what the module
+is doing and how</a></p>
+</li><li>
+<p><a href="#limitations">Limitations - OS compatibility, etc.</a></p>
+</li><li>
+<p><a href="#development">Development - Guide for contributing to the
+module</a></p>
+</li></ol>
+
+<h2 id="label-Module+Description">Module Description</h2>
+
+<p>This module installs, configures, and manages supervisord while minimizing
+the use of opinionated templates or sets of parameters.</p>
+
+<p>For more details on supervisor and the capabilities it provides, please see
+<a href="http://supervisord.org/index.html">supervisord.org/index.html</a></p>
+
+<p>This module uses Puppet 4 data types as well as providing puppet data in
+the module. It will not work with puppet versions earlier than 4.7 and is
+currently written to support supervisor on CentOS/RHEL 7. Other operating
+systems will be added if time permits.</p>
+
+<p>This module relies on the <a
+href="https://forge.puppet.com/stankevich/python">stankevich/python</a>
+python module for installation of pip and supervisor; however, the
+management of python can be disabled in the supervisord module if you are
+already using a different method for installation of the python
+prerequisites. Also, the management of the supervisord.service unit file
+and the systemd service management can be disabled in this module if
+another method is currently in use for managing these items.</p>
+
+<p>At this time, this module is not capable of managing groups or programs in
+the /etc/supervisor/conf.d directory. This will be added at a later time
+using similar methods to the management of settings in
+/etc/supervisor/supervisord.conf .</p>
+
+<p>This module was written primarily in support management of Galaxy, an open
+web-based platform for accessible, reproducible, and transparent
+computational biomedical research. Use of this module for other purposes
+may work.</p>
+<ul><li>
+<p><a href="https://galaxyproject.org/">Galaxy Project Web Site</a></p>
+</li><li>
+<p><a href="https://galaxyproject.org/docs/">Galaxy Documentation</a></p>
+</li><li>
+<p><a href="https://github.com/galaxyproject/galaxy">Galaxy Code
+Repository</a></p>
+</li></ul>
+
+<h2 id="label-Setup">Setup</h2>
+
+<h3 id="label-What+supervisord+affects">What supervisord affects</h3>
+<ul><li>
+<p>Package(s): supervisor (via pip, not epel or other package repositories),
+python-dev, python2-pip, python-virtualenv.</p>
+</li><li>
+<p>File(s):</p>
+<ul><li>
+<p>/etc/supervisor</p>
+</li><li>
+<p>/etc/supervisor/conf.d</p>
+</li><li>
+<p>/etc/supervisor/supervisord.conf</p>
+</li><li>
+<p>/etc/systemd/system/supervisord.service</p>
+</li><li>
+<p>/var/log/supervisor</p>
+</li><li>
+<p>/var/run/supervisor</p>
+</li></ul>
+</li><li>
+<p>Service(s): supervisord.service</p>
+</li></ul>
+
+<h3 id="label-Setup+Requirements">Setup Requirements</h3>
+
+<p>This module depends on the following puppet modules:</p>
+<ul><li>
+<p><a
+href="https://forge.puppet.com/camptocamp/systemd">camptocamp-systemd</a></p>
+</li><li>
+<p><a
+href="https://forge.puppet.com/puppetlabs/inifile">puppetlabs-inifile</a></p>
+</li><li>
+<p><a href="https://forge.puppet.com/puppetlabs/stdlib">puppetlabs-stdlib</a></p>
+</li><li>
+<p><a href="https://forge.puppet.com/stankevich/python">stankevich-python</a></p>
+</li></ul>
+
+<p>The <a href="https://forge.puppet.com/stahnma/epel">stahnma-epel</a> module
+is listed in the metadata.json file as a dependency as well, since
+stankevich-python lists it as a dependency. A parameter for this module is
+provided to disable the use of epel for package installation should you be
+using yumrepo resources or Spacewalk package management instead. By
+default, use of the epel repository is enabled in order to allow for beaker
+acceptance testing to function correctly.</p>
+
+<h3 id="label-Beginning+with+supervisord">Beginning with supervisord</h3>
+
+<p><code>include supervisord</code> should be all that is needed to install,
+configure, and start the supervisord service using the default parameters.</p>
+
+<p>The version of supervisor at the time of initial authoring was 3.3.3. The
+default settings for supervisord where taken from the echo_supervisord_conf
+command.</p>
+
+<h2 id="label-Usage">Usage</h2>
+
+<h3 id="label-Using+the+supervisord+module+without+relying+on+EPEL+to+provide+python+packages">Using the supervisord module without relying on EPEL to provide python packages</h3>
+
+<pre class="code ruby"><code class="ruby">---
+supervisord::manage_python_use_epel: false</code></pre>
+
+<h3 id="label-Using+the+supervisord+module+for+installation+and+configuration+but+not+service+management">Using the supervisord module for installation and configuration but not service management</h3>
+
+<pre class="code ruby"><code class="ruby">class { &#39;supervisord&#39;:
+  manage_systemd_unit =&gt; false,
+  manage_service =&gt; false,
+}
+</code></pre>
+
+<p>This allows for other modules to manage systemd services and unit files
+instead of the methods provided here.</p>
+
+<h3 id="label-Passing+a+hash+to+override+one+of+the+default+INI+settings+in+supervisord.conf+using+a+class+declaration">Passing a hash to override one of the default INI settings in supervisord.conf using a class declaration</h3>
+
+<pre class="code ruby"><code class="ruby">class { &#39;supervisord&#39;:
+  supervisord_ini_present =&gt; { 
+    &#39;include&#39; =&gt; { 
+      &#39;files&#39; =&gt; &#39;/opt/supervisor/conf.d/*.conf&#39;
+    }
+  },
+}
+</code></pre>
+
+<p>This changes the directory where extra supervisord configuration files
+should be loaded from.</p>
+
+<h3 id="label-Passing+a+hash+to+override+one+of+the+default+INI+settings+in+supervisord.conf+using+hiera">Passing a hash to override one of the default INI settings in supervisord.conf using hiera</h3>
+
+<pre class="code ruby"><code class="ruby">---
+supervisord::supervisord_ini_present:
+  &#39;include&#39;:
+    &#39;files&#39;: &#39;/opt/supervisor/conf.d/*.conf&#39;</code></pre>
+
+<h2 id="label-Reference">Reference</h2>
+
+<p>Generated puppet strings documentation with examples is available from <a
+href="https://millerjl1701.github.io/millerjl1701-supervisord">millerjl1701.github.io/millerjl1701-supervisord</a>.</p>
+
+<p>The puppet strings documentation is also included in the /docs folder.</p>
+
+<h3 id="label-Public+Classes">Public Classes</h3>
+<ul><li>
+<p>supervisord: Main class which install and configures the supervisord
+service. Parameters may be passed via class declaration or hiera.</p>
+</li></ul>
+
+<h3 id="label-Private+Classes">Private Classes</h3>
+<ul><li>
+<p>supervisord::config: Class for configuring the supervisord service.</p>
+</li><li>
+<p>supervisord::install: Class for setting up necessary directories and
+installing the supervisor package.</p>
+</li><li>
+<p>supervisord::python: Class for managing python dependencies, providing pip
+installation methods, and optional virtualenv support.</p>
+</li><li>
+<p>supervisord::service: Class for managing the supervisord service.</p>
+</li></ul>
+
+<h2 id="label-Limitations">Limitations</h2>
+
+<p>This module is currently written for CentOS/RHEL 7 only. Other operating
+systems will be added as time permits (unless someone submits a PR first.
+:)</p>
+
+<p>Currently, supervisor program and group configuration files in
+/etc/supervisor/conf.d are not managed with this module. These features
+will be added over time using similar ini_setting methods used for
+management of the /etc/supervisor/supervisord.conf file.</p>
+
+<p>No validation or testing of the /etc/supervisor/supervisord.conf file is
+done other than validation of the data types passed to the class. Passing
+appropriate parameters and values for the supervisord service to use is
+left as an exercise for the reader.</p>
+
+<h2 id="label-Development">Development</h2>
+
+<p>Please see the <a href="CONTRIBUTING.md">CONTRIBUTING document</a> for
+information on how to get started developing code and submit a pull request
+for this module. While written in an opinionated fashion at the start, over
+time this can become less and less the case.</p>
+
+<h3 id="label-Contributors">Contributors</h3>
+
+<p>To see who is involved with this module, see the <a
+href="https://github.com/millerjl1701/millerjl1701-supervisord/graphs/contributors">GitHub
+list of contributors</a> or the <a href="CONTRIBUTORS">CONTRIBUTORS
+document</a>.</p>
+
+<h2 id="label-Credits">Credits</h2>
+
+<p>Since this module is designed primarily for the management of Galaxy
+processes, the <a
+href="https://github.com/galaxyproject/dagobah-training/">Galaxy Project
+Administration Training repository</a> was used heavily to guide how
+supervisor is configured and used. Thank you to all the instructors past
+and present who have developed and published these materials.</p>
+</div></div>
+
+      <div id="footer">
+     Generated by <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>.
+</div>
+
+    </div>
+  </body>
+</html>
